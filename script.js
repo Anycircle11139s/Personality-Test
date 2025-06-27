@@ -1,107 +1,174 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // --------------------------
-    // Personality Archetypes
-    // --------------------------
     const ARCHETYPES = {
         Explorer: {
-            desc: "You live for new experiences and thrive on spontaneity. Adventure fuels your soul.",
+            desc: "You love new experiences and thrive on adventure and curiosity.",
             score: 0
         },
         Analyst: {
-            desc: "You love solving puzzles and approaching life with logical precision.",
+            desc: "You enjoy logic, strategy, and understanding complex systems.",
             score: 0
         },
         Helper: {
-            desc: "Empathy is your superpower. You find joy in supporting and uplifting others.",
+            desc: "You find fulfillment in supporting and caring for others.",
             score: 0
         },
         Leader: {
-            desc: "You’re decisive, confident, and naturally motivate those around you.",
+            desc: "You naturally inspire and motivate those around you.",
+            score: 0
+        },
+        Creator: {
+            desc: "You express yourself through innovation and artistic endeavors.",
+            score: 0
+        },
+        Harmonizer: {
+            desc: "You seek balance and understanding among people and ideas.",
             score: 0
         }
     };
 
-    // --------------------------
-    // Quiz Questions
-    // --------------------------
     const quizQuestions = [
         {
-            q: "What does your ideal Saturday look like?",
+            q: "When faced with a new challenge, you usually...",
             options: [
-                { text: "Trying a brand-new outdoor activity", scores: { Explorer: 2, Leader: 1 } },
-                { text: "Curling up with a brain-teasing book", scores: { Analyst: 2 } },
-                { text: "Volunteering at a community event", scores: { Helper: 2, Leader: 1 } },
-                { text: "Organizing a group trip and leading the way", scores: { Leader: 2, Explorer: 1 } }
+                { text: "Jump right in and learn by doing", scores: { Explorer: 2 } },
+                { text: "Analyze all possible outcomes first", scores: { Analyst: 2 } },
+                { text: "Consider how it affects everyone involved", scores: { Helper: 2, Harmonizer: 1 } },
+                { text: "Take charge and set a plan in motion", scores: { Leader: 2 } },
+                { text: "Find a creative way to approach the problem", scores: { Creator: 2 } }
             ]
         },
         {
-            q: "In a group project, you tend to…",
+            q: "Your ideal weekend involves...",
             options: [
-                { text: "Generate fresh ideas and keep energy high", scores: { Explorer: 2 } },
-                { text: "Create the plan, timeline, and spreadsheet", scores: { Analyst: 2, Leader: 1 } },
-                { text: "Make sure everyone feels heard and supported", scores: { Helper: 2 } },
-                { text: "Take charge and delegate tasks", scores: { Leader: 2 } }
+                { text: "Exploring a new place or activity", scores: { Explorer: 2 } },
+                { text: "Diving into a complex book or puzzle", scores: { Analyst: 2 } },
+                { text: "Spending quality time helping friends or family", scores: { Helper: 2 } },
+                { text: "Organizing a group event or meetup", scores: { Leader: 2 } },
+                { text: "Creating art, music, or writing", scores: { Creator: 2 } }
             ]
         },
         {
-            q: "Which activity sounds most appealing?",
+            q: "In group discussions, you tend to...",
             options: [
-                { text: "Backpacking somewhere you’ve never been", scores: { Explorer: 2 } },
-                { text: "Playing a strategy board game", scores: { Analyst: 2 } },
-                { text: "Hosting a dinner for friends", scores: { Helper: 2 } },
-                { text: "Pitching a new venture to investors", scores: { Leader: 2 } }
+                { text: "Suggest bold new ideas", scores: { Explorer: 2, Creator: 1 } },
+                { text: "Focus on facts and logic", scores: { Analyst: 2 } },
+                { text: "Make sure everyone feels heard", scores: { Helper: 2, Harmonizer: 1 } },
+                { text: "Guide the group toward decisions", scores: { Leader: 2 } },
+                { text: "Inspire others with original thinking", scores: { Creator: 2 } }
             ]
         },
         {
-            q: "Your friends describe you as…",
+            q: "Which of these values resonates most with you?",
             options: [
-                { text: "Adventurous", scores: { Explorer: 2 } },
-                { text: "Analytical", scores: { Analyst: 2 } },
-                { text: "Warm-hearted", scores: { Helper: 2 } },
-                { text: "Confident", scores: { Leader: 2 } }
+                { text: "Freedom and adventure", scores: { Explorer: 2 } },
+                { text: "Knowledge and insight", scores: { Analyst: 2 } },
+                { text: "Compassion and empathy", scores: { Helper: 2 } },
+                { text: "Responsibility and influence", scores: { Leader: 2 } },
+                { text: "Creativity and expression", scores: { Creator: 2 } },
+                { text: "Harmony and understanding", scores: { Harmonizer: 2 } }
             ]
         },
         {
-            q: "At a fork in the road, you…",
+            q: "When working on a project, you prefer to...",
             options: [
-                { text: "Pick the path less traveled", scores: { Explorer: 2 } },
-                { text: "Study the map carefully", scores: { Analyst: 2 } },
-                { text: "Ask companions which route feels best", scores: { Helper: 2 } },
-                { text: "Decide quickly and start moving", scores: { Leader: 2 } }
+                { text: "Try new methods and experiment", scores: { Explorer: 2 } },
+                { text: "Plan carefully and use data", scores: { Analyst: 2 } },
+                { text: "Support the team and maintain morale", scores: { Helper: 2 } },
+                { text: "Lead and coordinate efforts", scores: { Leader: 2 } },
+                { text: "Bring fresh, creative ideas", scores: { Creator: 2 } },
+                { text: "Ensure everyone collaborates smoothly", scores: { Harmonizer: 2 } }
             ]
         },
         {
-            q: "Which quote resonates with you most?",
+            q: "Your friends would describe you as...",
             options: [
-                { text: "“Life is either a daring adventure or nothing.” – Helen Keller", scores: { Explorer: 2 } },
-                { text: "“Knowledge is power.” – Francis Bacon", scores: { Analyst: 2 } },
-                { text: "“We rise by lifting others.” – Robert G. Ingersoll", scores: { Helper: 2 } },
-                { text: "“Leadership is influence.” – John C. Maxwell", scores: { Leader: 2 } }
+                { text: "Adventurous and curious", scores: { Explorer: 2 } },
+                { text: "Logical and thoughtful", scores: { Analyst: 2 } },
+                { text: "Kind and dependable", scores: { Helper: 2 } },
+                { text: "Confident and inspiring", scores: { Leader: 2 } },
+                { text: "Imaginative and expressive", scores: { Creator: 2 } },
+                { text: "Calm and diplomatic", scores: { Harmonizer: 2 } }
             ]
         },
         {
-            q: "You’re faced with an unexpected problem. First you…",
+            q: "When you need to recharge, you...",
             options: [
-                { text: "Experiment to see what might work", scores: { Explorer: 2 } },
-                { text: "Break it down logically", scores: { Analyst: 2 } },
-                { text: "Ask who’s affected and how to help", scores: { Helper: 2 } },
-                { text: "Take charge and rally resources", scores: { Leader: 2 } }
+                { text: "Go on an adventure or try something new", scores: { Explorer: 2 } },
+                { text: "Read, research, or reflect", scores: { Analyst: 2 } },
+                { text: "Connect with close friends or family", scores: { Helper: 2 } },
+                { text: "Take time to organize your thoughts and goals", scores: { Leader: 2 } },
+                { text: "Engage in a creative hobby", scores: { Creator: 2 } },
+                { text: "Spend quiet time in nature or meditation", scores: { Harmonizer: 2 } }
             ]
         },
         {
-            q: "Your dream vacation involves…",
+            q: "How do you handle conflict?",
             options: [
-                { text: "A one-way ticket with no set plan", scores: { Explorer: 2 } },
-                { text: "A museum tour through ancient cities", scores: { Analyst: 2 } },
-                { text: "Volunteering on a meaningful project", scores: { Helper: 2 } },
-                { text: "Luxury, networking, and big opportunities", scores: { Leader: 2 } }
+                { text: "Look for new solutions and options", scores: { Explorer: 2 } },
+                { text: "Analyze the root cause logically", scores: { Analyst: 2 } },
+                { text: "Empathize and seek compromise", scores: { Helper: 2, Harmonizer: 1 } },
+                { text: "Take charge to resolve it quickly", scores: { Leader: 2 } },
+                { text: "Express feelings through creativity", scores: { Creator: 2 } }
+            ]
+        },
+        {
+            q: "Your dream job would be...",
+            options: [
+                { text: "Travel blogger or explorer", scores: { Explorer: 2 } },
+                { text: "Scientist or researcher", scores: { Analyst: 2 } },
+                { text: "Counselor or nurse", scores: { Helper: 2 } },
+                { text: "Manager or entrepreneur", scores: { Leader: 2 } },
+                { text: "Artist or designer", scores: { Creator: 2 } },
+                { text: "Mediator or community organizer", scores: { Harmonizer: 2 } }
+            ]
+        },
+        {
+            q: "What motivates you most?",
+            options: [
+                { text: "Discovering new horizons", scores: { Explorer: 2 } },
+                { text: "Solving problems and puzzles", scores: { Analyst: 2 } },
+                { text: "Helping others and making a difference", scores: { Helper: 2 } },
+                { text: "Leading and inspiring others", scores: { Leader: 2 } },
+                { text: "Creating and innovating", scores: { Creator: 2 } },
+                { text: "Building peace and harmony", scores: { Harmonizer: 2 } }
+            ]
+        },
+        {
+            q: "You value communication that is...",
+            options: [
+                { text: "Open and adventurous", scores: { Explorer: 2 } },
+                { text: "Clear and logical", scores: { Analyst: 2 } },
+                { text: "Warm and supportive", scores: { Helper: 2 } },
+                { text: "Direct and confident", scores: { Leader: 2 } },
+                { text: "Expressive and imaginative", scores: { Creator: 2 } },
+                { text: "Respectful and balanced", scores: { Harmonizer: 2 } }
+            ]
+        },
+        {
+            q: "When working in teams, you often...",
+            options: [
+                { text: "Encourage trying new things", scores: { Explorer: 2 } },
+                { text: "Focus on details and quality", scores: { Analyst: 2 } },
+                { text: "Support teammates emotionally", scores: { Helper: 2 } },
+                { text: "Coordinate and lead efforts", scores: { Leader: 2 } },
+                { text: "Bring creative ideas forward", scores: { Creator: 2 } },
+                { text: "Mediate conflicts and build consensus", scores: { Harmonizer: 2 } }
+            ]
+        },
+        {
+            q: "Which environment do you thrive in?",
+            options: [
+                { text: "Dynamic and unpredictable", scores: { Explorer: 2 } },
+                { text: "Structured and orderly", scores: { Analyst: 2 } },
+                { text: "Caring and collaborative", scores: { Helper: 2 } },
+                { text: "Fast-paced and goal-oriented", scores: { Leader: 2 } },
+                { text: "Expressive and inspiring", scores: { Creator: 2 } },
+                { text: "Peaceful and harmonious", scores: { Harmonizer: 2 } }
             ]
         }
     ];
 
-    // --------------------------
-    // DOM Elements
-    // --------------------------
+    // DOM elements
     const startBtn = document.getElementById("start-btn");
     const nextBtn = document.getElementById("next-btn");
     const restartBtn = document.getElementById("restart-btn");
@@ -119,9 +186,6 @@ document.addEventListener("DOMContentLoaded", () => {
     let currentQuestion = 0;
     let selectedOption = null;
 
-    // --------------------------
-    // Event Listeners
-    // --------------------------
     startBtn.addEventListener("click", () => {
         startScreen.classList.add("hidden");
         quizScreen.classList.remove("hidden");
@@ -131,96 +195,7 @@ document.addEventListener("DOMContentLoaded", () => {
     nextBtn.addEventListener("click", () => {
         if (selectedOption === null) return;
 
-        // Apply scores
         const scores = quizQuestions[currentQuestion].options[selectedOption].scores;
-        for (const [type, value] of Object.entries(scores)) {
-            ARCHETYPES[type].score += value;
-        }
+        for (const [type, val] of Obj
 
-        currentQuestion++;
-        selectedOption = null;
-
-        if (currentQuestion < quizQuestions.length) {
-            loadQuestion();
-        } else {
-            endQuiz();
-        }
-    });
-
-    optionsList.addEventListener("click", (e) => {
-        if (!e.target || !e.target.matches("li")) return;
-        const index = Array.from(optionsList.children).indexOf(e.target);
-        selectedOption = index;
-
-        // Highlight selection
-        Array.from(optionsList.children).forEach(li => li.classList.remove("selected"));
-        e.target.classList.add("selected");
-        nextBtn.classList.remove("hidden");
-    });
-
-    restartBtn.addEventListener("click", () => {
-        resetQuiz();
-    });
-
-    shareBtn.addEventListener("click", async () => {
-        const url = window.location.href.split("#")[0];
-        try {
-            await navigator.clipboard.writeText(url + "?result=" + encodeURIComponent(archetypeNameEl.textContent));
-            shareConfirmEl.classList.remove("hidden");
-            setTimeout(() => shareConfirmEl.classList.add("hidden"), 2000);
-        } catch (err) {
-            alert("Copy failed. Please copy the URL manually.");
-        }
-    });
-
-    // --------------------------
-    // Functions
-    // --------------------------
-    function loadQuestion() {
-        const qObj = quizQuestions[currentQuestion];
-        questionText.textContent = qObj.q;
-        progressEl.textContent = `Question ${currentQuestion + 1} / ${quizQuestions.length}`;
-
-        optionsList.innerHTML = "";
-        qObj.options.forEach(opt => {
-            const li = document.createElement("li");
-            li.textContent = opt.text;
-            optionsList.appendChild(li);
-        });
-
-        nextBtn.classList.add("hidden");
-    }
-
-    function endQuiz() {
-        quizScreen.classList.add("hidden");
-        resultScreen.classList.remove("hidden");
-
-        // Determine top archetype
-        const top = Object.entries(ARCHETYPES).sort((a, b) => b[1].score - a[1].score)[0];
-        archetypeNameEl.textContent = top[0];
-        archetypeDescEl.textContent = top[1].desc;
-    }
-
-    function resetQuiz() {
-        // Reset scores
-        Object.values(ARCHETYPES).forEach(a => a.score = 0);
-        currentQuestion = 0;
-        selectedOption = null;
-        resultScreen.classList.add("hidden");
-        startScreen.classList.remove("hidden");
-    }
-
-    // Deep link to results (if any)
-    window.addEventListener("load", () => {
-        const params = new URLSearchParams(window.location.search);
-        const result = params.get("result");
-        if (result && ARCHETYPES[result]) {
-            startScreen.classList.add("hidden");
-            quizScreen.classList.add("hidden");
-            resultScreen.classList.remove("hidden");
-            archetypeNameEl.textContent = result;
-            archetypeDescEl.textContent = ARCHETYPES[result].desc;
-        }
-    });
-});
 
