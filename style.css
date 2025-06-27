@@ -1,4 +1,3 @@
-
 :root {
     --bg: #0e0e10;
     --card: #1f1f23;
@@ -143,3 +142,4 @@ a {
         transition: background var(--transition);
     }
 }
+
