@@ -196,6 +196,88 @@ document.addEventListener("DOMContentLoaded", () => {
         if (selectedOption === null) return;
 
         const scores = quizQuestions[currentQuestion].options[selectedOption].scores;
-        for (const [type, val] of Obj
+        for (const [type, val] of Object.entries(scores)) {
+            if (ARCHETYPES[type]) ARCHETYPES[type].score += val;
+        }
+
+        currentQuestion++;
+        selectedOption = null;
+
+        if (currentQuestion < quizQuestions.length) {
+            loadQuestion();
+        } else {
+            showResult();
+        }
+    });
+
+    optionsList.addEventListener("click", (e) => {
+        if (!e.target.matches("li")) return;
+
+        selectedOption = Array.from(optionsList.children).indexOf(e.target);
+        Array.from(optionsList.children).forEach(li => li.classList.remove("selected"));
+        e.target.classList.add("selected");
+        nextBtn.classList.remove("hidden");
+    });
+
+    restartBtn.addEventListener("click", () => {
+        resetQuiz();
+    });
+
+    shareBtn.addEventListener("click", async () => {
+        try {
+            const baseUrl = window.location.href.split("?")[0];
+            await navigator.clipboard.writeText(baseUrl + "?result=" + encodeURIComponent(archetypeNameEl.textContent));
+            shareConfirmEl.classList.remove("hidden");
+            setTimeout(() => shareConfirmEl.classList.add("hidden"), 2500);
+        } catch {
+            alert("Copy failed. Please copy the link manually.");
+        }
+    });
+
+    function loadQuestion() {
+        const q = quizQuestions[currentQuestion];
+        questionText.textContent = q.q;
+        progressEl.textContent = `Question ${currentQuestion + 1} of ${quizQuestions.length}`;
+        optionsList.innerHTML = "";
+        q.options.forEach(opt => {
+            const li = document.createElement("li");
+            li.tabIndex = 0;
+            li.textContent = opt.text;
+            optionsList.appendChild(li);
+        });
+        nextBtn.classList.add("hidden");
+    }
+
+    function showResult() {
+        quizScreen.classList.add("hidden");
+        resultScreen.classList.remove("hidden");
+
+        const topArchetype = Object.entries(ARCHETYPES).sort((a, b) => b[1].score - a[1].score)[0];
+        archetypeNameEl.textContent = topArchetype[0];
+        archetypeDescEl.textContent = topArchetype[1].desc;
+    }
+
+    function resetQuiz() {
+        currentQuestion = 0;
+        selectedOption = null;
+        Object.values(ARCHETYPES).forEach(a => (a.score = 0));
+        resultScreen.classList.add("hidden");
+        startScreen.classList.remove("hidden");
+    }
+
+    // Load from URL result param (deep linking)
+    window.addEventListener("load", () => {
+        const params = new URLSearchParams(window.location.search);
+        const res = params.get("result");
+        if (res && ARCHETYPES[res]) {
+            startScreen.classList.add("hidden");
+            quizScreen.classList.add("hidden");
+            resultScreen.classList.remove("hidden");
+            archetypeNameEl.textContent = res;
+            archetypeDescEl.textContent = ARCHETYPES[res].desc;
+        }
+    });
+});
+
 
 
